@@ -36,11 +36,11 @@ model Account {
 }
 
 model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
+    id           String     @id @default(cuid())
+    sessionToken String     @unique
     userId       String
     expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -54,12 +54,23 @@ model User {
 
     firstname     String?
     surname       String?
+
+    group         Group?    @relation(fields: [groupId], references: [id])
+    groupId       String?
+    subgroup      Int       @default(1)
 }
 
 model VerificationToken {
     identifier String
-    token      String   @unique
+    token      String       @unique
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+
+model Group {
+    id          String      @id @default(cuid())
+    name        String      @unique
+    users       User[]
 }
