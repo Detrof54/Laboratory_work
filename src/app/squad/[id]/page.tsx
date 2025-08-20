@@ -5,8 +5,8 @@ import { deleteTutor } from "~/app/api/action/squad";
 import TutorSearch from "../../ui/tutorSearch";
 import { db } from "~/server/db";
 import { Students } from "~/app/_components/squad/students";
-import { auth } from "~/server/auth";
-import { api } from "~/trpc/react";
+// import { auth } from "~/server/auth";
+// import { api } from "~/trpc/server";
 // import { api } from "~/trpc/server";
 
 
@@ -36,11 +36,12 @@ export default async function Page(props: {
   const tutor = squad?.tutor
 
 
-  const gr = api.post.hello.useQuery({text: "Привет"})
+  // const gr = api.post.hello({text: "Привет"})
+  // console.log("\n\nTRPC\n\n",gr)
+
 
   return (
     <main>
-      <h1>{gr.data?.greeting}</h1>
       <Link href={`/task/${task?.id}`} className="btn btn-primary">
         {task?.name}
       </Link>

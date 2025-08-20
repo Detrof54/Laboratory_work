@@ -50,6 +50,9 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.1.1(react@19.1.1)
+      romanov:
+        specifier: 'link:'
+        version: 'link:'
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
