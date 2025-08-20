@@ -9,7 +9,17 @@ export default async function Page(
 ) {
 
   const params = await props.params;
-  const user = await db.user.findUnique({where: { id: params.id }});
+  const user = await db.user.findUnique(
+    {
+      where: { id: params.id },
+      include: {
+        group:true,
+      }
+    });
+
+    const groupJSX = user?.group && <><label>Группа</label><Link className="btn" href={"/group/" + user?.group.id}>
+      {user?.group.name + "-" + user.subgroup}</Link></>;
+
 
   if (!user)
     return (
@@ -47,7 +57,7 @@ return (
             className="input input-bordered"
             defaultValue={user.surname ?? ""}
           />
-
+          {groupJSX}
           <button type="submit" className="btn btn-primary">
             Обновить
           </button>

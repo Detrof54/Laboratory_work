@@ -64,23 +64,23 @@ export async function createGroup(formData: FormData) {
     revalidatePath("/group/" + fd.id_group); 
   }
 
-  // export async function addUserToGroup(formData: FormData) {
-  //   const fd = z
-  //     .object({
-  //       id_student: z.string(),
-  //       id_group: z.string(),
-  //     })
-  //     .parse({
-  //       id_student: formData.get("id_student"),
-  //       id_group: formData.get("id_group"),
-  //     });
-  //   await db.group.update({
-  //     where: { id: fd.id_group },
-  //     data: {
-  //       users: {
-  //         connect: { id: fd.id_student },
-  //       },
-  //     },
-  //   }); 
-  //   revalidatePath("/group/" + fd.id_group); 
-  // }
+  export async function addUserToGroup(formData: FormData) {
+    const fd = z
+      .object({
+        id_student: z.string(),
+        id_group: z.string(),
+      })
+      .parse({
+        id_student: formData.get("id_student"),
+        id_group: formData.get("id_group"),
+      });
+    await db.group.update({
+      where: { id: fd.id_group },
+      data: {
+        users: {
+          connect: { id: fd.id_student },
+        },
+      },
+    }); 
+    revalidatePath("/group/" + fd.id_group); 
+  }
