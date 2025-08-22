@@ -8,7 +8,7 @@ export const gradeRouter = createTRPCRouter({
         taskId: z.string(),
         studentId: z.string(),
         value: z.coerce.number(),
-        squadTutorId: z.string(),
+        squadTutorId: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {

@@ -19,7 +19,10 @@ export default async function Page(props: {
       </main>
     );
 
-  return (
+  const role = (await auth())?.user.role;
+  const mode = role === "ADMIN" || role === "TUTOR";
+
+  if(mode) return (
     <main>
       <form action={updateTaskType} className="form-control">
         <div className="flex max-w-xs flex-col space-y-2">
@@ -50,5 +53,10 @@ export default async function Page(props: {
     </main>
   );
 
-  
+  return (
+    <main>
+      <h1>{taskType.name}</h1>
+      <TaskTable tasks={tasks} />
+    </main>
+  );
 }

@@ -5,6 +5,7 @@ import { deleteTutor } from "~/app/api/action/squad";
 import TutorSearch from "../../ui/tutorSearch";
 import { db } from "~/server/db";
 import { Students } from "~/app/_components/squad/students";
+import { auth } from "~/server/auth";
 // import { auth } from "~/server/auth";
 // import { api } from "~/trpc/server";
 // import { api } from "~/trpc/server";
@@ -39,6 +40,9 @@ export default async function Page(props: {
   // const gr = api.post.hello({text: "Привет"})
   // console.log("\n\nTRPC\n\n",gr)
 
+  const session = await auth();
+  const role = session?.user.role;
+  const mode = role === "ADMIN" || (squad?.tutorId === session?.user.id);
 
   return (
     <main>
@@ -69,7 +73,7 @@ export default async function Page(props: {
           squadId={squad?.id ?? ""}
         />
       </div>
-      <Students squadId={squad?.id ?? ""} taskId={task?.id ?? ""} mode={true} squadTutorId={tutor?.id ?? ""} />
+      <Students squadId={squad?.id ?? ""} taskId={task?.id ?? ""} mode={mode} squadTutorId={tutor?.id ?? ""} />
     </main>
   );
 }

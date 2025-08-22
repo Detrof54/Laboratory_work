@@ -1,5 +1,6 @@
 "use server"
 
+import { $Enums } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import z from "zod";
@@ -40,6 +41,7 @@ export async function updateUser(formData: FormData) {
       id: z.string(),
       firstname: z.string(),
       surname: z.string(),
+      role: z.nativeEnum($Enums.Role),
     })
     .parse({
       id: formData.get("id"),

@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import GroupUser from "~/app/_components/group/groupUser";
 import { deleteGroup, updateGroup } from "~/app/api/action/group";
 import UserSearch from "~/app/ui/userSearch";
+import { auth } from "~/server/auth";
 import { db } from "~/server/db";
 
 export default async function Page(props: {
@@ -20,7 +21,9 @@ export default async function Page(props: {
             </main>
         );
 
-    return (
+    const role = (await auth())?.user.role
+
+    if (role === "ADMIN") return (
         <main>
             <form action={updateGroup} className="form-control">
                 <div className="flex max-w-xs flex-col space-y-2">
@@ -52,4 +55,15 @@ export default async function Page(props: {
             </Suspense>
         </main>
     );
+
+    return  (
+        <main>
+            <h1>Группа</h1>
+            <h2>{group.name}</h2>
+            <Suspense fallback={<div>Loading...</div>}>
+                <GroupUser group={group} />
+            </Suspense>
+        </main>
+    )
+
 }

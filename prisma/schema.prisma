@@ -70,7 +70,15 @@ model User {
     tutorTask   Squad[]
     grade       Grade[]
 
+    role        Role @default(USER)
 }
+
+enum Role {
+  USER
+  TUTOR
+  ADMIN
+}
+
 
 model Group {
     id    String @id @default(cuid())
