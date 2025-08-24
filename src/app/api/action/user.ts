@@ -5,9 +5,13 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import z from "zod";
 import { db } from "~/server/db";
+import { isAdmin } from "../auth/check";
 
 
 export async function createUser(formData: FormData) {
+  if (!(await isAdmin()))
+    throw new Error("Unauthorized");
+
   const fd = z
     .object({
       email: z.string().email(),
@@ -24,6 +28,9 @@ export async function createUser(formData: FormData) {
 }
 
 export async function deleteUser(formData: FormData) {
+  if (!(await isAdmin()))
+    throw new Error("Unauthorized");
+
   const fd = z
     .object({
       id: z.string(),
@@ -36,6 +43,9 @@ export async function deleteUser(formData: FormData) {
 }
 
 export async function updateUser(formData: FormData) {
+  if (!(await isAdmin()))
+    throw new Error("Unauthorized");
+
   const fd = z
     .object({
       id: z.string(),

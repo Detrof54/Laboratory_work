@@ -6,7 +6,13 @@ import {SigninLink} from "~/app/_components/signlink"
 
 export default async function Home() {
 
+  const role = (await auth())?.user.role
+
   return (
-    <h1>Main page</h1>
+    <>
+      <h1>Main page</h1>
+      <h2>{role}</h2>
+    </>
+    
   );
 }
