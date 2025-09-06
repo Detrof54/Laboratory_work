@@ -1,6 +1,6 @@
 import React from "react";
 
-import type { Task } from "@prisma/client";
+import { Task } from "@prisma/client";
 import Link from "next/link";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 

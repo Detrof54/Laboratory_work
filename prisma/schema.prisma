@@ -14,7 +14,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-
 // Necessary for Next auth
 model Account {
     id                       String  @id @default(cuid())
@@ -36,19 +35,11 @@ model Account {
 }
 
 model Session {
-    id           String     @id @default(cuid())
-    sessionToken String     @unique
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
     userId       String
     expires      DateTime
-    user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model VerificationToken {
-    identifier String
-    token      String       @unique
-    expires    DateTime
-
-    @@unique([identifier, token])
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -70,15 +61,16 @@ model User {
     tutorTask   Squad[]
     grade       Grade[]
 
-    role        Role @default(USER)
+    role    Role @default(USER)
 }
 
-enum Role {
-  USER
-  TUTOR
-  ADMIN
-}
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
 
+    @@unique([identifier, token])
+}
 
 model Group {
     id    String @id @default(cuid())
@@ -115,7 +107,6 @@ model Squad {
     StudentsOnTasks StudentsOnTasks[]
 }
 
-// Промежуточная таблица для соединения User и Squad (отношение многое ко многим)
 model StudentsOnTasks {
     student   User   @relation(fields: [studentId], references: [id])
     studentId String
@@ -132,4 +123,10 @@ model Grade {
     student   User   @relation(fields: [studentId], references: [id])
     studentId String
     value     Int
+}
+
+enum Role {
+  USER
+  TUTOR
+  ADMIN
 }

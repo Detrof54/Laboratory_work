@@ -4,54 +4,45 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { db } from "~/server/db";
-import { isAdmin } from "../auth/check";
 
 export async function createGroup(formData: FormData) {
-  if (!(await isAdmin()))
-    throw new Error("Unauthorized");
+  const fd = z
+    .object({
+      name: z.string(),
+    })
+    .parse({
+      name: formData.get("name"),
+    });
+  await db.group.create({ data: fd });
+  revalidatePath("/group");
+}
 
+export async function deleteGroup(formData: FormData) {
     const fd = z
       .object({
-        name: z.string(),
+        id: z.string(),
       })
       .parse({
-        name: formData.get("name"),
-      });
-    await db.group.create({ data: fd });
-    revalidatePath("/group");
-  }
-
-  export async function deleteGroup(formData: FormData) {
-    if (!(await isAdmin()))
-      throw new Error("Unauthorized");
-    
-    const fd = z
-      .object({
-        id: z.string()
-      })
-      .parse({
-        id: formData.get("id")
+        id: formData.get("id"),
       });
     await db.group.delete({ where: { id: fd.id } });
     redirect("/group");
   }
   
   export async function updateGroup(formData: FormData) {
-    if (!(await isAdmin()))
-      throw new Error("Unauthorized");
     const fd = z
       .object({
         id: z.string(),
-        name: z.string()
+        name: z.string(),
       })
       .parse({
-        id: formData.get("id"), 
-        name: formData.get("name")
+        id: formData.get("id"),
+        name: formData.get("name"),
       });
     await db.group.update({ where: { id: fd.id }, data: fd });
-    revalidatePath("/group/"+fd.id);
+    revalidatePath("/group/" + fd.id);
   }
-  
+
   export async function deleteUserFromGroup(formData: FormData) {
     const fd = z
       .object({
@@ -74,9 +65,6 @@ export async function createGroup(formData: FormData) {
   }
 
   export async function addUserToGroup(formData: FormData) {
-    if (!(await isAdmin()))
-       throw new Error("Unauthorized");
-
     const fd = z
       .object({
         id_student: z.string(),

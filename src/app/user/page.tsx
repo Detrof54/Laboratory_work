@@ -1,8 +1,12 @@
-import {db} from "~/server/db"
+import { auth } from "~/server/auth";
+import { api, HydrateClient } from "~/trpc/server";
+import { Navbar } from "./../_components/navbar";
+import { SigninLink } from "./../_components/signlink";
+import { db } from "~/server/db";
 import { AddUser } from "../_components/user/addUser";
 import UserTable from "../_components/user/userTable";
 import Pagination from "../ui/pagination";
-import { auth } from "~/server/auth";
+
 
 export default async function Page(props: {
   searchParams?: Promise<{
@@ -21,16 +25,19 @@ export default async function Page(props: {
   });
   const pages = Math.ceil(Number(count) / size);
 
-  // const users = await db.user.findMany()
 
-  const role = (await auth())?.user.role;
+  //export default async function Home() {
+  //const users = await db.user.findMany()
+
+  const role = (await auth())?.user.role
 
   return (
     <>
       <h1>User page</h1>
-      {role === "ADMIN" && <AddUser />}
-      <UserTable users = {users}/>
-      <Pagination totalPages = {pages}/>
+      {/*role === "ADMIN" && <AddUser />*/}
+      <AddUser />
+      <UserTable users={users} />
+      <Pagination totalPages={pages} />
     </>
   );
 }

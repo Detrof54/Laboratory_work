@@ -2,12 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { db } from "~/server/db";
-import { isAdmin, isTutor } from "../auth/check";
 
 export async function addTutor(formData: FormData) {
-  if (!((await isAdmin())))
-    throw new Error("Unauthorized");
-  
   type UpdateData = Parameters<typeof db.squad.update>[0]["data"];
   const data: UpdateData = {
     id: formData.get("squadId") as string,
@@ -21,9 +17,6 @@ export async function addTutor(formData: FormData) {
 }
 
 export async function deleteTutor(formData: FormData) {
-  if (!(await isAdmin()))
-    throw new Error("Unauthorized");
-
   const id = formData.get("squadId") as string;
   await db.squad.update({
     where: { id: id },
@@ -33,9 +26,6 @@ export async function deleteTutor(formData: FormData) {
 }
 
 export async function addStudent(formData: FormData) {
-  if (!((await isAdmin()) || (await isTutor())))
-    throw new Error("Unauthorized");
-
   type CreateData = Parameters<typeof db.studentsOnTasks.create>[0]["data"];
   const data: CreateData = {
     studentId: formData.get("studentId") as string,
@@ -48,9 +38,6 @@ export async function addStudent(formData: FormData) {
 }
 
 export async function deleteStudent(formData: FormData) {
-  if (!((await isAdmin()) || (await isTutor())))
-    throw new Error("Unauthorized");
-
   type DeleteData = Parameters<typeof db.studentsOnTasks.delete>[0]["where"];
   const data: DeleteData = {
     studentId_squadId: {

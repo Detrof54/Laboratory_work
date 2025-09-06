@@ -23,8 +23,8 @@ export default async function Page(props: {
 
   const pages = Math.ceil(Number(count) / size);
 
-  const role = (await auth())?.user.role;
-  const mode = role === "ADMIN" || role === "TUTOR";
+  const role = (await auth())?.user.role
+  const mode = role === "ADMIN" || role === "TUTOR"
 
   return (
     <div>

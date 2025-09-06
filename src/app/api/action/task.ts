@@ -4,12 +4,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { db } from "~/server/db";
-import { isAdmin, isTutor } from "../auth/check";
 
 export async function createTask(formData: FormData) {
-  if (!((await isAdmin()) || (await isTutor())))
-    throw new Error("Unauthorized");
-
   const fd = z
     .object({
       taskTypeId: z.string(),
@@ -25,9 +21,6 @@ export async function createTask(formData: FormData) {
 }
 
 export async function deleteTask(formData: FormData) {
-  if (!((await isAdmin()) || (await isTutor())))
-    throw new Error("Unauthorized");
-
   const fd = z
     .object({
       id: z.string(),
@@ -42,9 +35,6 @@ export async function deleteTask(formData: FormData) {
 }
 
 export async function updateTask(formData: FormData) {
-  if (!((await isAdmin()) || (await isTutor())))
-    throw new Error("Unauthorized");
-
   const fd = z
     .object({
       id: z.string(),
@@ -61,9 +51,6 @@ export async function updateTask(formData: FormData) {
 }
 
 export async function addUserTask(formData: FormData) {
-  if (!((await isAdmin()) || (await isTutor())))
-    throw new Error("Unauthorized");
-
   const id = formData.get("id") as string;
   await db.squad.create({
     data: { taskId: id, date: new Date() },
@@ -72,8 +59,6 @@ export async function addUserTask(formData: FormData) {
 }
 
 export async function deleteUserTask(formData: FormData) {
-  if (!((await isAdmin()) || (await isTutor())))
-    throw new Error("Unauthorized");
   const id = formData.get("id") as string;
   await db.squad.delete({ where: { id: id } });
   revalidatePath("/task/" + id);

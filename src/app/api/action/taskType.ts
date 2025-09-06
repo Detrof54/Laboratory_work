@@ -4,12 +4,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { db } from "~/server/db";
-import { isAdmin, isTutor } from "../auth/check";
 
 export async function createTaskType(formData: FormData) {
-  if (!((await isAdmin()) || (await isTutor())))
-    throw new Error("Unauthorized");
-
   const fd = z
     .object({
       name: z.string(),
@@ -22,9 +18,6 @@ export async function createTaskType(formData: FormData) {
 }
 
 export async function updateTaskType(formData: FormData) {
-  if (!((await isAdmin()) || (await isTutor())))
-    throw new Error("Unauthorized");
-
   const fd = z
     .object({
       id: z.string(),
@@ -39,9 +32,6 @@ export async function updateTaskType(formData: FormData) {
 }
 
 export async function deleteTaskType(formData: FormData) {
-  if (!((await isAdmin()) || (await isTutor())))
-    throw new Error("Unauthorized");
-
   const fd = z
     .object({
       id: z.string(),

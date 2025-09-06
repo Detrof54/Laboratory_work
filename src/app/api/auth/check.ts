@@ -9,14 +9,6 @@ export async function isAdmin() {
     return true
 }
 
-export async function isTutor() {
-    const session = await auth();
-    if (!session) return false;
-    if (session.user.role !== $Enums.Role.TUTOR)
-        return false
-    return true
-}
-
 export async function isAdminOrCurrentTutor(squadTutorId: string) {
     const session = await auth();
     if (!session) return false;

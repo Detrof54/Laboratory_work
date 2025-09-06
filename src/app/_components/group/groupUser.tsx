@@ -1,8 +1,8 @@
+import { Group, User } from "@prisma/client";
+import { db } from "~/server/db";
 import { PencilSquareIcon, UserMinusIcon } from "@heroicons/react/16/solid";
-import type { Group,User } from "@prisma/client";
 import Link from "next/link";
 import { deleteUserFromGroup } from "~/app/api/action/group";
-import { db } from "~/server/db";
 
 export default async function GroupUser({ group }: { group: Group }) {
     const users = await db.user.findMany({ where: { groupId: group.id } });
